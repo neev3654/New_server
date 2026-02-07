@@ -2,28 +2,27 @@ const express = require("express");
 
 const app = express();
 
+const port = 3000;
+
 const users = [
   { id: 1, name: "Arjun", role: "student" },
   { id: 2, name: "Priyesha", role: "mentor" },
-  { id: 1, name: "Krishna", role: "student" },
-  { id: 2, name: "Dev", role: "mentor" }
+ 
 ];
 
-const port = 350;
+
 
 app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
+
+
 app.get("/users", (req, res) => {
   res.send(users);
 });
 
-app.get("/users/test/:userid/:role", (req, res) => {
-  console.log("req:",req.params)
-  res.send(users)
-  res.status(200);
-});
+
 
 
 app.get("/users/:id", (req, res) => {
@@ -35,6 +34,24 @@ app.get("/users/:id", (req, res) => {
   }
 
   res.status(200).json(user);
+});
+
+app.use(express.json());
+
+app.post("/users", (req, res) => {
+console.log(req.body)
+  const newUser = {
+    id: users.length + 1,
+    name: req.body.name,
+    role: req.body.role
+  };
+
+  users.push(newUser);
+
+  res.status(201).json({
+    message: "User created",
+    user: newUser
+  });
 });
 
 
