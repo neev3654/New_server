@@ -54,6 +54,26 @@ console.log(req.body)
   });
 });
 
+app.put("/users/:id", (req, res) => {
+  const userId = Number(req.params.id);
+  const index = users.findIndex(u => u.id === userId);
+
+  if (index === -1) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  users[index] = {
+    id: userId,
+    name: req.body.name,
+    role: req.body.role
+  };
+
+  res.status(200).json({
+    message: "User replaced",
+    user: users[index]
+  });
+});
+
 
 app.listen(port, () => {
   console.log("Server started on port",port);
