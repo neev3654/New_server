@@ -1,5 +1,6 @@
 const express = require("express");
 
+
 const app = express();
 
 const port = 3000;
@@ -39,24 +40,34 @@ app.get("/users/:id", (req, res) => {
 app.use(express.json());
 
 app.post("/users", (req, res) => {
-console.log(req.body)
-  const newUser = {
-    id: users.length + 1,
-    name: req.body.name,
-    role: req.body.role
-  };
 
-  users.push(newUser);
+  for(let i=0; i<req.body.length; i++){
+    const newUser = {
+      id: users.length + 1,
+      name: req.body[i].name,
+      role: req.body[i].role
+    };
+    users.push(newUser);
+  }
 
+ 
   res.status(201).json({
-    message: "User created",
-    user: newUser
+    message: "Users added successfully!",
+    allUsers: users
   });
 });
 
 app.put("/users/:id", (req, res) => {
   const userId = Number(req.params.id);
-  const index = users.findIndex(u => u.id === userId);
+  
+  // find which position the user is at
+  let index = -1;
+  for (let i = 0; i < users.length; i++) {
+    if (users[i].id === userId) {
+      index = i;
+      break;
+    }
+  }
 
   if (index === -1) {
     return res.status(404).json({ message: "User not found" });
