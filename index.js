@@ -13,6 +13,10 @@ const users = [
 ];
 
 
+app.use(express.json());
+
+app.use(cors);
+
 
 app.get("/", (req, res) => {
   res.send("Server is running");
@@ -38,9 +42,7 @@ app.get("/users/:id", (req, res) => {
   res.status(200).json(user);
 });
 
-app.use(express.json());
 
-app.use(cors);
 
 app.post("/users", (req, res) => {
 
