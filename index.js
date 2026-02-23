@@ -1,5 +1,6 @@
 const express = require("express");
 
+const cors = require("cors");
 
 const app = express();
 
@@ -39,6 +40,8 @@ app.get("/users/:id", (req, res) => {
 
 app.use(express.json());
 
+app.use(cors);
+
 app.post("/users", (req, res) => {
 
   for(let i=0; i<req.body.length; i++){
@@ -59,8 +62,7 @@ app.post("/users", (req, res) => {
 
 app.put("/users/:id", (req, res) => {
   const userId = Number(req.params.id);
-  
-  // find which position the user is at
+
   let index = -1;
   for (let i = 0; i < users.length; i++) {
     if (users[i].id === userId) {
@@ -76,7 +78,8 @@ app.put("/users/:id", (req, res) => {
   users[index] = {
     id: userId,
     name: req.body.name,
-    role: req.body.role
+    role: req.body.role,
+    age: req.body.age
   };
 
   res.status(200).json({
